@@ -17,11 +17,8 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping
+    @PostMapping("/sign-up")
     public ResponseEntity<Customer> signUpTheCustomer(@RequestBody Customer customer) {
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(customerService.create(customer));
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(customer));
     }
 }
