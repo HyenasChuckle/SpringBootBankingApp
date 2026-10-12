@@ -3,6 +3,7 @@ package dev.mike.app.controller;
 import dev.mike.app.dto.SignUpRequestDto;
 import dev.mike.app.entity.Customer;
 import dev.mike.app.service.CustomerService;
+import dev.mike.app.service.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,9 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final JwtService jwtService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Customer> signUpTheCustomer(@RequestBody @Valid SignUpRequestDto dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(dto));
+    public ResponseEntity<String> signUpTheCustomer(@RequestBody @Valid SignUpRequestDto dto) {
+        Customer customer = customerService.create(dto);
+
+        String token = jwtService.generateToken(customer);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 }

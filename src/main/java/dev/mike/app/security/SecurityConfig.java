@@ -1,5 +1,7 @@
 package dev.mike.app.security;
 
+import dev.mike.app.filter.JwtAuthorizationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -7,10 +9,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -29,6 +35,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/customers/sign-up", "/api/customers/sign-in", "/error").permitAll()
                 .anyRequest().authenticated()
         );
+
+        http.addFilterBefore(jwtAuthorizationFilter, AnonymousAuthenticationFilter.class);
 
         return http.build();
     }
