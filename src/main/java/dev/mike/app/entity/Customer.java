@@ -32,7 +32,7 @@ public class Customer implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
-    @JoinTable(name = "roles", joinColumns = @JoinColumn(name = "customer_id"))
+    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "customer_id"))
     @Column(name = "role")
     @Builder.Default
     private Set<Role> roles = new HashSet<>(Set.of(Role.USER));

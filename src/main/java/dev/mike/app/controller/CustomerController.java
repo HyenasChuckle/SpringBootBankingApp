@@ -1,7 +1,9 @@
 package dev.mike.app.controller;
 
+import dev.mike.app.dto.SignUpRequestDto;
 import dev.mike.app.entity.Customer;
 import dev.mike.app.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Customer> signUpTheCustomer(@RequestBody Customer customer) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(customer));
+    public ResponseEntity<Customer> signUpTheCustomer(@RequestBody @Valid SignUpRequestDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(dto));
     }
 }
