@@ -24,8 +24,11 @@ import java.util.List;
 @Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final String secret;
+
+    public JwtAuthorizationFilter(@Value("${jwt.secret}") String secret) {
+        this.secret = secret;
+    }
 
     @Override
     protected void doFilterInternal(@Nonnull HttpServletRequest request,

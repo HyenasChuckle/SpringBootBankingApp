@@ -7,17 +7,16 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
-@DisplayName("Generating JWT - Unit Test")
+@DisplayName("JwtService class unit tests")
 class JwtServiceTest {
 
-    private final String secret = "T6rFCtE0UscOKn2iBDnkai4oS9pY27SfrciowymV4US";
-    private final long expiration = 60000;
-
-    private final JwtService jwtService = new JwtService(secret, expiration);
+    private final JwtService jwtService =
+            new JwtService("T6rFCtE0UscOKn2iBDnkai4oS9pY27SfrciowymV4US", 60000);
 
     @Test
+    @DisplayName("should generate a valid JWT token")
     void checkTokenGenerationProcess() {
         Customer customer = Customer.builder()
                 .username("example")
