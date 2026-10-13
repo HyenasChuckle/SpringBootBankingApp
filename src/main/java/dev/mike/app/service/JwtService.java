@@ -17,11 +17,13 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final String secret;
+    private final long expiration;
 
-    @Value("${jwt.expiration}")
-    private long expirationTimeInMillis;
+    public JwtService(@Value("${jwt.secret}") String secret, @Value("${jwt.expiration}") long expiration) {
+        this.secret = secret;
+        this.expiration = expiration;
+    }
 
     public String generateToken(UserDetails userDetails) {
         List<String> roles = userDetails.getAuthorities().stream()
@@ -36,7 +38,7 @@ public class JwtService {
 
         Date now = new Date();
 
-        Date expiryDate = new Date(now.getTime() + expirationTimeInMillis);
+        Date expiryDate = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
                 .subject(userDetails.getUsername())
